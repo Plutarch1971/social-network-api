@@ -1,5 +1,5 @@
 import { Schema, Types, model, type Document } from 'mongoose';
-import mongoose from 'mongoose';
+
 
 interface IUser extends Document {
   username: string;
@@ -29,7 +29,7 @@ const userSchema = new Schema<IUser>(
     },
     thoughts: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Thought',
       },
     ],
@@ -60,7 +60,7 @@ userSchema.virtual('friendCount').get(function () {
 //   next();
 // });
 
-const User = mongoose.model<IUser>('User', userSchema);
+const User = model<IUser>('User', userSchema);
 
-export { User };
+export default User;
 

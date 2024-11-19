@@ -1,11 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.reactionSchema = void 0;
-const mongoose_1 = require("mongoose");
-const reactionSchema = new mongoose_1.Schema({
+import { Schema, Types } from 'mongoose';
+const reactionSchema = new Schema({
     reactionId: {
-        type: mongoose_1.Schema.Types.ObjectId,
-        default: () => new mongoose_1.Types.ObjectId(),
+        type: Schema.Types.ObjectId,
+        default: () => new Types.ObjectId(),
     },
     reactionBody: {
         type: String,
@@ -30,4 +27,4 @@ const reactionSchema = new mongoose_1.Schema({
     },
     id: false,
 });
-exports.reactionSchema = reactionSchema;
+export { reactionSchema };

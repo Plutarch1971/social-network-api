@@ -1,17 +1,13 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+import mongoose from 'mongoose';
+const db = async () => {
+    try {
+        await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/studentsDB');
+        console.log('Database connected.');
+        return mongoose.connection;
+    }
+    catch (error) {
+        console.error('Database connection error:', error);
+        throw new Error('Database connection failed.');
+    }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importDefault(require("mongoose"));
-const connectionString = 'mongodb://127.0.0.1:27017/socialNetworkDB';
-mongoose_1.default.connect(connectionString, {
-//useNewUrlParser: true,
-//useUnifiedTopology: true,
-});
-const db = mongoose_1.default.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', () => {
-    console.log('Database connected');
-});
-exports.default = db;
+export default db;

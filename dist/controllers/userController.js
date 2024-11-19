@@ -1,21 +1,17 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUser = exports.createUser = exports.getUserById = exports.getAllUsers = exports.headCount = void 0;
-const index_js_1 = require("../models/index.js");
+import { User } from '../models/index.js';
 // Aggregate function to get number of all users
-const headCount = async () => {
-    const numberOfFriends = await index_js_1.User.aggregate()
+export const headCount = async () => {
+    const numberOfFriends = await User.aggregate()
         .count('friendCount');
     return numberOfFriends;
 };
-exports.headCount = headCount;
 // 
-const getAllUsers = async (_req, res) => {
+export const getAllUsers = async (_req, res) => {
     try {
-        const users = await index_js_1.User.find();
+        const users = await User.find();
         const userObj = {
             users,
-            headCount: await (0, exports.headCount)(),
+            headCount: await headCount(),
         };
         res.json(userObj);
     }
@@ -25,11 +21,10 @@ const getAllUsers = async (_req, res) => {
         });
     }
 };
-exports.getAllUsers = getAllUsers;
-const getUserById = async (req, res) => {
+export const getUserById = async (req, res) => {
     const { userId } = req.params;
     try {
-        const user = await index_js_1.User.findById(userId)
+        const user = await User.findById(userId)
             .populate('thought')
             .populate('friends');
         if (user) {
@@ -47,10 +42,9 @@ const getUserById = async (req, res) => {
         });
     }
 };
-exports.getUserById = getUserById;
-const createUser = async (req, res) => {
+export const createUser = async (req, res) => {
     try {
-        const user = await index_js_1.User.create(req.body);
+        const user = await User.create(req.body);
         res.json(user);
     }
     catch (error) {
@@ -59,11 +53,10 @@ const createUser = async (req, res) => {
         });
     }
 };
-exports.createUser = createUser;
-const updateUser = async (req, res) => {
+export const updateUser = async (req, res) => {
     const { userId } = req.params;
     try {
-        const user = await index_js_1.User.findByIdAndUpdate(req.body.id, req.body, {
+        const user = await User.findByIdAndUpdate(req.body.id, req.body, {
             new: true,
             runValidators: true,
         });
@@ -82,11 +75,10 @@ const updateUser = async (req, res) => {
         });
     }
 };
-exports.updateUser = updateUser;
-const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res) => {
     const { userId } = req.params;
     try {
-        const user = await index_js_1.User.findByIdAndDelete(userId);
+        const user = await User.findByIdAndDelete(userId);
         if (user) {
             res.json({
                 message: 'User deleted!'
@@ -104,4 +96,3 @@ const deleteUser = async (req, res) => {
         });
     }
 };
-exports.deleteUser = deleteUser;

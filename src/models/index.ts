@@ -1,6 +1,6 @@
-import { User } from '../models/User';
-import  Thought  from '../models/Thought';
-import { reactionSchema, IReaction } from './Reaction';
+import User from '../models/User.js';
+import Thought  from '../models/Thought.js';
+import { reactionSchema, IReaction } from './Reaction.js';
 
 export { User, 
          Thought, 

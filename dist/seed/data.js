@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.reactions = exports.thoughts = exports.users = void 0;
 const users = [
     {
         username: "techie_sarah",
@@ -21,7 +18,6 @@ const users = [
         friends: []
     }
 ];
-exports.users = users;
 const thoughts = [
     {
         thoughtText: "Learning MongoDB is actually pretty fun!",
@@ -39,7 +35,6 @@ const thoughts = [
         reactions: []
     }
 ];
-exports.thoughts = thoughts;
 const reactions = [
     {
         reactionBody: "Totally agree!",
@@ -54,4 +49,4 @@ const reactions = [
         username: "techie_sarah"
     }
 ];
-exports.reactions = reactions;
+export { users, thoughts, reactions };

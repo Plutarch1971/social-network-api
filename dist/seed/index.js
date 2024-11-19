@@ -1,19 +1,14 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const models_1 = require("../models");
-const User_1 = require("../models/User");
-const data_1 = require("./data");
-// import { reactions } from '../seed/data';
-const cleanDB_1 = __importDefault(require("../seed/cleanDB"));
+import { User, Thought } from "../models/index.js";
+import { users, thoughts, reactions } from './data.js';
+import cleanDB from '../seed/cleanDB.js';
+import db from '../config/connection.js';
 const seedDatabase = async () => {
     try {
+        await db();
         // Clean existing data
-        await (0, cleanDB_1.default)();
+        await cleanDB();
         // Seed users first
-        const createdUsers = await User_1.User.create(data_1.users);
+        const createdUsers = await User.create(users);
         console.log('Users seeded!');
         // Add friends
         const user1 = createdUsers[0];
@@ -33,15 +28,15 @@ const seedDatabase = async () => {
         ]);
         console.log('Friend relationships seeded!');
         // Create thoughts and associate them with users
-        const thoughtsWithUsers = data_1.thoughts.map(thought => ({
+        const thoughtsWithUsers = thoughts.map(thought => ({
             ...thought,
-            reactions: data_1.reactions.filter(reaction => reaction.username !== thought.username)
+            reactions: reactions.filter(reaction => reaction.username !== thought.username)
         }));
-        const createdThoughts = await models_1.Thought.create(thoughtsWithUsers);
+        const createdThoughts = await Thought.create(thoughtsWithUsers);
         console.log('Thoughts and reactions seeded!');
         // Update users with their thoughts
         for (const thought of createdThoughts) {
-            const user = await User_1.User.findOne({ username: thought.username });
+            const user = await User.findOne({ username: thought.username });
             if (user) {
                 user.thoughts.push(thought._id);
                 await user.save();
@@ -56,4 +51,5 @@ const seedDatabase = async () => {
         process.exit(1);
     }
 };
-exports.default = seedDatabase;
+seedDatabase();
+export default seedDatabase;

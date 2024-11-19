@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = require("mongoose");
-const Reaction_js_1 = require("./Reaction.js");
-const thoughtSchema = new mongoose_1.Schema({
+import { Schema, model } from 'mongoose';
+import { reactionSchema } from './Reaction.js';
+const thoughtSchema = new Schema({
     thoughtText: {
         type: String,
         required: true,
@@ -17,7 +15,7 @@ const thoughtSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
-    reactions: [Reaction_js_1.reactionSchema],
+    reactions: [reactionSchema],
 }, {
     toJSON: {
         virtuals: true,
@@ -29,5 +27,5 @@ const thoughtSchema = new mongoose_1.Schema({
 thoughtSchema.virtual('reactionCount').get(function () {
     return this.reactions.length;
 });
-const Thought = (0, mongoose_1.model)('Thought', thoughtSchema);
-exports.default = Thought;
+const Thought = model('Thought', thoughtSchema);
+export default Thought;

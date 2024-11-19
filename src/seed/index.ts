@@ -1,10 +1,9 @@
 // src/utils/seed/index.ts
 import { Types } from 'mongoose';
-import  { Thought }  from '../models';
-import { User }  from "../models/User";
-import { users, thoughts, reactions } from './data';
-// import { reactions } from '../seed/data';
-import cleanDB from '../seed/cleanDB';
+import { User, Thought } from "../models/index.js";
+import { users, thoughts, reactions } from './data.js';
+import cleanDB from '../seed/cleanDB.js';
+import db from '../config/connection.js';
 
 // Define interfaces for better type safety
 interface IUser {
@@ -17,11 +16,13 @@ interface IUser {
   interface IThought {
     _id: Types.ObjectId;
     username: string;
-    reations: any[]; //You might to want to defing a proper type for reactions
+    reactions: any[]; //You might to want to defing a proper type for reactions
   }
 
 const seedDatabase = async () => {
+
   try {
+    await db();
     // Clean existing data
     await cleanDB();
     
@@ -75,5 +76,5 @@ const seedDatabase = async () => {
     process.exit(1);
   }
 };
-
+seedDatabase();
 export default seedDatabase;
