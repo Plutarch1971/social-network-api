@@ -5,7 +5,9 @@ getAllUsers,
 getUserById,
 createUser,
 updateUser,
-deleteUser 
+deleteUser,
+addFriend,
+deleteFriend
 } from '../../controllers/userController.js';
 
 const router = Router();
@@ -19,20 +21,15 @@ router.get('/:id', getUserById);
 // /api/users
 router.post('/', createUser);
 
+// /api/users/:userId/friends/:friendId
+router.post('/:userId/friends/:friendId', addFriend);
+
+// /api/users/:userId/friends/:friendId
+router.delete('/:userId/friends/:friendId', deleteFriend);
 // /api/users/:userId
 router.put('/:id', updateUser);
 
 // /api/users/:userId
 router.delete('/:id', deleteUser);
-
-//Get all users
-router.get('/', async (_req, res) => {
-    try{
-        const users = await User.find();
-        res.json(users);
-    } catch (err){
-        res.status(500).json(err);
-    }
-});
 
 export default router ;

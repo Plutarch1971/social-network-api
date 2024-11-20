@@ -55,7 +55,7 @@ export const createThought = async (req, res) => {
         }
         // If user exists, create thought
         const thought = await Thought.create({
-            thouhtText: req.body.thouhtText,
+            thoughtText: req.body.thoughtText,
             username: req.body.username
         });
         // Update user's thoughts array

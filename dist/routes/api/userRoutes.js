@@ -1,6 +1,5 @@
 import { Router } from 'express';
-import { User } from '../../models/index.js';
-import { getAllUsers, getUserById, createUser, updateUser, deleteUser } from '../../controllers/userController.js';
+import { getAllUsers, getUserById, createUser, updateUser, deleteUser, addFriend, deleteFriend } from '../../controllers/userController.js';
 const router = Router();
 // /api/users
 router.get('/', getAllUsers);
@@ -8,18 +7,11 @@ router.get('/', getAllUsers);
 router.get('/:id', getUserById);
 // /api/users
 router.post('/', createUser);
+// /api/users/friends
+router.post('/:userId/friends/:friendId', addFriend);
+router.delete('/:userId/friends/:friendId', deleteFriend);
 // /api/users/:userId
 router.put('/:id', updateUser);
 // /api/users/:userId
 router.delete('/:id', deleteUser);
-//Get all users
-router.get('/', async (_req, res) => {
-    try {
-        const users = await User.find();
-        res.json(users);
-    }
-    catch (err) {
-        res.status(500).json(err);
-    }
-});
 export default router;
