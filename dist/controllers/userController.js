@@ -4,6 +4,7 @@ export const headCount = async () => {
     const numberOfFriends = await User.aggregate()
         .count('friendCount');
     return numberOfFriends;
+    return;
 };
 // 
 export const getAllUsers = async (_req, res) => {

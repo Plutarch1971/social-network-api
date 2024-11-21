@@ -152,7 +152,7 @@ export const updateThought = async (req: Request, res: Response) => {
 };
 
 
-// Delete a thought
+//Delete a thought
 export const deleteThought = async (req: Request, res: Response) => {
     try {
         const thought = await Thought.findByIdAndDelete( req.params.id );
@@ -164,5 +164,53 @@ export const deleteThought = async (req: Request, res: Response) => {
         res.status(500).json(err);
     }
 };
-
+// export const addThought = async (req: Request, res: Response) => {
+//     try {
+//         const user = await User.findById(req.params.userId);
+//         if (!user) {
+//            return res.status(404).json({
+//                 message: 'No user found with this id!'
+//             });
+//         }
+//         // Create a new thought and add it to the user's thoughts array
+//         const newThought = await Thought.create({
+//             ...req.body,
+//             username: user.username // Add the username to the thought
+//             });
+//             // Add the thought to the user's thoughts array
+    
+//             user.thoughts.push(newThought._id as Types.ObjectId);
+//             await user.save();
+           
+        
+//             res.status(201).json(newThought);
+        
+//         } catch (error: any) {
+//             res.status(500).json({
+//                 message: error.message
+//         });
+//     }
+// }
+// export const removeThought = async (req: Request, res: Response) => {
+//     try {
+//         const user = await User.findById(req.params.userId);
+//         const thought = await Thought.findById(req.params.thoughtId);
+//         if (user && thought) {
+//             user.thoughts.filter(thoughtsToKeep => thoughtsToKeep._id as Types.ObjectId !== thought._id as Types.ObjectId)
+//             if (user) {
+//                 await user.save();
+//                 res.json(user);
+//                 console.log(`User's thought: ${thought} successfully deleted for ${user}`);
+//             }
+//         } else {
+//             res.status(404).json({
+//                 message: 'No user found with this id!'
+//             });
+//         }
+//         }catch (error: any) {
+//             res.status(500).json({
+//                 message: error.message
+//             });
+//         }
+//     }
 export default router;

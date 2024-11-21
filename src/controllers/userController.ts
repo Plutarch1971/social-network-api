@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { User } from '../models/index.js';
+import { Thought, User } from '../models/index.js';
 import { Types } from 'mongoose';
 
 // Aggregate function to get number of all users
@@ -7,6 +7,7 @@ export const headCount = async () => {
     const numberOfFriends = await User.aggregate()
         .count('friendCount');
     return numberOfFriends;
+    return;
 }
 
 // 
@@ -145,3 +146,5 @@ export const updateUser = async (req: Request, res: Response) => {
             });
         }
      };
+
+    
