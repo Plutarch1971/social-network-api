@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAllUsers, getUserById, createUser, updateUser, deleteUser, addFriend, deleteFriend } from '../../controllers/userController.js';
+import { getAllUsers, getUserById, createUser, updateUser, deleteUser, addFriend } from '../../controllers/userController.js';
 import { createThought, deleteThought, getAllThoughts, getThoughtById, updateThought } from '../../controllers/thoughtController.js';
 const router = Router();
 // /api/users
@@ -11,7 +11,7 @@ router.post('/', createUser);
 // /api/users/:userId/friends/:friendId
 router.post('/:userId/friends/:friendId', addFriend);
 // /api/users/:userId/friends/:friendId
-router.delete('/:userId/friends/:friendId', deleteFriend);
+//router.delete('/:userId/friends/:friendId', deleteFriend);
 // /api/users/:userId/thoughts
 router.post('/:userId/thoughts', createThought);
 //api/users/:userId/thoughts

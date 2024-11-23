@@ -34,6 +34,7 @@ export const getAllThoughts = async (_req: Request, res: Response) => {
 //Get thought by id
 export const getThoughtById = async (req: Request, res: Response) => {
     const { thoughtId } = req.params;
+    console.log('Requested thought ID:', thoughtId);
     try {
         const thought = await Thought.findById(thoughtId)
         .populate('reactions');
@@ -45,6 +46,7 @@ export const getThoughtById = async (req: Request, res: Response) => {
                 });
         } 
     } catch (error: any) {
+        console.log('Error:', error); 
             res.status(500).json({
                 message: error.message
             });
@@ -55,29 +57,27 @@ export const getThoughtById = async (req: Request, res: Response) => {
 //Create a thought
 export const createThought = async (req: Request, res: Response): Promise<void> => {
     try {
-        // First check if user exists
-        const user = await User.findOne({ username: req.body.username });
+        // Get user by id instead of username
+        const user = await User.findById(req.params.userId);
         if (!user) {
-            res.status(404).json({ message: 'No user found with this username!' });
+            res.status(404).json({ message: 'No user found with this id!' });
             return;
         }
-        // If user exists, create thought
+
+        // Create thought using user's username
         const thought = await Thought.create({
             thoughtText: req.body.thoughtText,
-            username: req.body.username
-    });
+            username: user.username // Use user's username from the found user
+        });
 
         // Update user's thoughts array
-        await User.findOneAndUpdate(
-            {_id: user._id},
-            {$push: { thoughts : thought._id}},
-            { new: true}
+        await User.findByIdAndUpdate(
+            user._id,
+            { $push: { thoughts: thought._id } },
+            { new: true }
         );
-        if (!user) {
-             res.status(404).json({ message: 'No user found with this username!' });
-            return;
-          }
-        res.json(thought);
+
+        res.status(201).json(thought);
     } catch (error: any) {
         res.status(400).json({
             message: error.message
@@ -90,14 +90,21 @@ export const addReaction = async (req: Request, res: Response) => {
     
  try{ 
     const thoughtId  = req.params.thoughtId;
+    console.log(thoughtId);
 
     const thought = await Thought.findByIdAndUpdate(
     thoughtId,
     { $push: { reactions: req.body}},
     { new: true, runValidators: true}
- );
+    );
 
- }catch (error: any) {
+    if (!thought) {
+        res.status(404).json({ message: 'No thought found with this id!'});
+        return;
+    }
+     res.json(thought);
+
+    } catch (error: any) {
      res.status(500).json({
          message: error.message
      });
@@ -120,6 +127,7 @@ export const removeReaction = async (req: Request, res: Response): Promise<void>
             return;
         }
 
+        res.json(thought);
     } catch (error: any) {
         res.status(500).json({
             message: error.message
@@ -155,7 +163,7 @@ export const updateThought = async (req: Request, res: Response) => {
 //Delete a thought
 export const deleteThought = async (req: Request, res: Response) => {
     try {
-        const thought = await Thought.findByIdAndDelete( req.params.id );
+        const thought = await Thought.findByIdAndDelete( req.params.thoughtId );
         if(!thought){
             res.status(404).json({ message: 'Thought not found with this id!'});
         }
@@ -164,33 +172,6 @@ export const deleteThought = async (req: Request, res: Response) => {
         res.status(500).json(err);
     }
 };
-// export const addThought = async (req: Request, res: Response) => {
-//     try {
-//         const user = await User.findById(req.params.userId);
-//         if (!user) {
-//            return res.status(404).json({
-//                 message: 'No user found with this id!'
-//             });
-//         }
-//         // Create a new thought and add it to the user's thoughts array
-//         const newThought = await Thought.create({
-//             ...req.body,
-//             username: user.username // Add the username to the thought
-//             });
-//             // Add the thought to the user's thoughts array
-    
-//             user.thoughts.push(newThought._id as Types.ObjectId);
-//             await user.save();
-           
-        
-//             res.status(201).json(newThought);
-        
-//         } catch (error: any) {
-//             res.status(500).json({
-//                 message: error.message
-//         });
-//     }
-// }
 // export const removeThought = async (req: Request, res: Response) => {
 //     try {
 //         const user = await User.findById(req.params.userId);

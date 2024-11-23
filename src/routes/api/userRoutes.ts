@@ -35,7 +35,7 @@ router.post('/', createUser);
 router.post('/:userId/friends/:friendId', addFriend);
 
 // /api/users/:userId/friends/:friendId
-router.delete('/:userId/friends/:friendId', deleteFriend);
+//router.delete('/:userId/friends/:friendId', deleteFriend);
 
 // /api/users/:userId/thoughts
 router.post('/:userId/thoughts', createThought);
@@ -52,6 +52,7 @@ router.put('/:userId/:thoughtId', updateThought);
 
 //api/users/:userId/thoughtId/:friendId
 router.delete('/:userId/:thoughtId', deleteThought);
+
 // /api/users/:userId
 router.put('/:id', updateUser);
 

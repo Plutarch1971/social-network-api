@@ -68,6 +68,7 @@ export const createUser = async (req: Request, res: Response) => {
 export const addFriend = async (req: Request, res: Response) => {
     try {
         const user = await User.findById(req.params.userId);
+        
         const friend = await User.findById(req.params.friendId);
         if (user && friend) {
             user.friends.push(friend._id as Types.ObjectId);
@@ -90,6 +91,12 @@ export const deleteFriend = async (req: Request, res: Response) => {
     try {
         const user = await User.findById(req.params.userId);
         const friend = await User.findById(req.params.friendId);
+        
+        if (!Types.ObjectId.isValid(req.params.userId) || !Types.ObjectId.isValid(req.params.friendId)) 
+            {
+                 return res.status(400).json({ message: 'Invalid userId or friendId' });
+            }
+
         if (user && friend) {
             user.friends.filter(friendsToKeep => friendsToKeep._id as Types.ObjectId !== friend._id as Types.ObjectId)
            

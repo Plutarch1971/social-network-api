@@ -3,12 +3,14 @@ import { getAllThoughts, getThoughtById, createThought, updateThought, deleteTho
 const router = Router();
 // Base thought routes
 router.route('/')
-    .get(getAllThoughts)
-    .post(createThought);
+    .get(getAllThoughts);
+//Create a thought
+//http://localhost:3001/api/users/:userId/thoughts
+router.route('/').post(createThought);
 // Single thought routes
 // /api/thoughts/:thoughtId
 // /api/thoughts/:thoughtId/reactions
-router.route('/')
+router.route('/:thoughtId')
     .get(getThoughtById)
     .put(updateThought)
     .delete(deleteThought);

@@ -1,4 +1,5 @@
 import { User } from '../models/index.js';
+import { Types } from 'mongoose';
 // Aggregate function to get number of all users
 export const headCount = async () => {
     const numberOfFriends = await User.aggregate()
@@ -88,6 +89,9 @@ export const deleteFriend = async (req, res) => {
     try {
         const user = await User.findById(req.params.userId);
         const friend = await User.findById(req.params.friendId);
+        if (!Types.ObjectId.isValid(req.params.userId) || !Types.ObjectId.isValid(req.params.friendId)) {
+            return res.status(400).json({ message: 'Invalid userId or friendId' });
+        }
         if (user && friend) {
             user.friends.filter(friendsToKeep => friendsToKeep._id !== friend._id);
             await user.save();
